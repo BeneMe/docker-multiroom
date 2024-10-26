@@ -10,6 +10,8 @@ Major image tags:
 - `dev`
 - `dev-airplay2`
 
+`latest` tags are built monthly (and on-demand). `dev` tags are built weekly (and on-demand), and may contain unstable code and tests.
+
 
 ### In a Nutshell
 [Snapcast](https://github.com/badaix/snapcast) multi-room audio streaming with AirPlay-1 or -2, Spotify and HTTPS support built-in. Based on Alpine Linux.
@@ -30,9 +32,9 @@ Snapcast is loaded from the edge branch of Alpines APK repositories while `shair
 
 Some services may require to bind privileged port numbers (<1024). Check [Network Tweaks](#network-tweaks) section below.
 
-Please note when using Airplay Classic/1: To broadcast the airplay speaker announcements to all client devices, `avahi-daemon` is required and used by shairport-sync. As broadcasts can only work in a layer-2 network domain, the container needs to be attached to the same layer-2 network as the clients (see [docker-compose.yaml](docker-compose.yaml) for an example). As a consequence, in routed layer-3 setups (e.g., Kubernetes), Airplay cannot function out of the box. You may try to workaround this issue by using an MDNS repeater, however, this is not tested and not supported.  
+Please note when using Airplay Classic/1 and/or Spotify: To broadcast the airplay speaker announcements to all client devices, `avahi-daemon` is required and used by shairport-sync. As broadcasts can only work in a layer-2 network domain, the container needs to be attached to the same layer-2 network as the clients (see [docker-compose.yaml](docker-compose.yaml) for an example). As a consequence, in routed layer-3 setups (e.g., Kubernetes), Airplay cannot function out of the box. You may try to workaround this issue by using an MDNS repeater, however, this is not tested and not supported.  
 
-Please note when using Airplay-2: In addition to the requirements for AirPlay Classic/1, Airplay-2 requires NQPTP which needs to bind privileged ports. Check [Network Tweaks](#network-tweaks) section below.
+Please note when using Airplay-2: In addition to the requirements for AirPlay Classic/1 and/or Spotify, Airplay-2 requires NQPTP which needs to bind privileged ports. Check [Network Tweaks](#network-tweaks) section below.
 
 
 ## Container Usage
@@ -56,8 +58,8 @@ AirPlay:
 Spotify:
 - `SPOTIFY_CONFIG_ENABLED`: Enable the generation of a Snapcast `source` for AirPlay in the snapserver configuration file on container startup. Set to `1` to enable, defaults to `0`.
 - `SPOTIFY_SOURCE_NAME`: Source name of Spotify in Snapcast. Defaults to `Spotify`.
-- `SPOTIFY_USERNAME`: Username to login at Spotify API. Defaults to empty string.
-- `SPOTIFY_PASSWORD`: Password to login at Spotify API. Defaults to empty string. Attention: The password is stored in clear-text format in the configuration file!
+- `SPOTIFY_USERNAME`: (optional) Username to login at Spotify API. Defaults to empty string.
+- `SPOTIFY_PASSWORD`: (optional) Password to login at Spotify API. Defaults to empty string. Attention: The password is stored in clear-text format in the configuration file!
 - `SPOTIFY_DEVICE_NAME`: Speaker name in Spotify app. Defaults to `Snapcast`.
 - `SPOTIFY_BITRATE`: Bitrate to stream from Spotify. Defaults to `320` for high quality.
 - `SPOTIFY_EXTRA_ARGS`: (advanced) Add additional arguments to `source` configuration. Format: `&key=value`.
