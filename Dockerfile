@@ -87,9 +87,9 @@ FROM snapcast-airport AS snapcast-airport-spotify
 RUN mkdir -p /app/build \
   && cd /app/build \
   && apk add --no-cache --upgrade --virtual .build-deps git libconfig-dev cargo build-base cmake rust-bindgen clang18-dev \
-  && git clone https://github.com/librespot-org/librespot.git librespot.git \
+  && git clone -b master https://github.com/librespot-org/librespot.git librespot.git \
   && cd librespot.git \
-  && cargo build --release --no-default-features \
+  && cargo build --release --no-default-features --features with-avahi \
   && cp ./target/release/librespot /usr/sbin/ \
   && chmod +x /usr/sbin/librespot \
   #
@@ -118,8 +118,7 @@ ENV AIRPLAY_EXTRA_ARGS ""
 
 ENV SPOTIFY_CONFIG_ENABLED "0"
 ENV SPOTIFY_SOURCE_NAME "Spotify"
-ENV SPOTIFY_USERNAME ""
-ENV SPOTIFY_PASSWORD ""
+ENV SPOTIFY_ACCESS_TOKEN ""
 ENV SPOTIFY_DEVICE_NAME "Snapcast"
 ENV SPOTIFY_BITRATE "320"
 ENV SPOTIFY_EXTRA_ARGS ""
